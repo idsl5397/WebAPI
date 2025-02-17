@@ -16,7 +16,10 @@ builder.Services.AddDbContext<isha_sys_devContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("WebDatabase")));
 
 
-
+builder.Services.AddHttpsRedirection(options =>
+{
+    options.HttpsPort = null; // 禁用 HTTPS 重定向
+});
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
@@ -31,6 +34,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllers();
 
 var app = builder.Build();
+// app.Urls.Add("http://0.0.0.0:8080");
 
 // Configure the HTTP request pipeline.
 // if (app.Environment.IsDevelopment())
