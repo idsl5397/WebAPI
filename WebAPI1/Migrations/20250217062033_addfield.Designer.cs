@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebAPI1.Context;
 
 #nullable disable
 
-namespace WebAPI1.Entities
+namespace WebAPI1.Migrations
 {
     [DbContext(typeof(ISHAuditDbcontext))]
-    partial class ISHAuditDbcontextModelSnapshot : ModelSnapshot
+    [Migration("20250217062033_addfield")]
+    partial class addfield
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -134,98 +137,7 @@ namespace WebAPI1.Entities
                     b.ToTable("FactoryNames");
                 });
 
-            modelBuilder.Entity("WebAPI1.Entities.KpiCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("UpdateAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("KpiCategorys");
-                });
-
-            modelBuilder.Entity("WebAPI1.Entities.KpiData", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BaselineValue")
-                        .HasColumnType("int");
-
-                    b.Property<string>("BaselineYear")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<int?>("CompanyId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsApplied")
-                        .HasColumnType("bit");
-
-                    b.Property<int?>("KpiCategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("KpiFieldId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("KpiItem")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("KpiItemDetail")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int?>("KpiUnitDataId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Remarks")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TargetValue")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdateAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex(new[] { "CompanyId" }, "IX_KpiDatas_CompanyId");
-
-                    b.HasIndex(new[] { "KpiCategoryId" }, "IX_KpiDatas_KpiCategoryId");
-
-                    b.HasIndex(new[] { "KpiFieldId" }, "IX_KpiDatas_KpiFieldId");
-
-                    b.HasIndex(new[] { "KpiUnitDataId" }, "IX_KpiDatas_KpiUnitDataId");
-
-                    b.ToTable("KpiDatas");
-                });
-
-            modelBuilder.Entity("WebAPI1.Entities.KpiField", b =>
+            modelBuilder.Entity("WebAPI1.Entities.Field", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -246,56 +158,7 @@ namespace WebAPI1.Entities
 
                     b.HasKey("Id");
 
-                    b.ToTable("KpiFields");
-                });
-
-            modelBuilder.Entity("WebAPI1.Entities.KpiReport", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("KpiReportValue")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdateAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Year")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("KpiReports");
-                });
-
-            modelBuilder.Entity("WebAPI1.Entities.KpiUnitData", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UnitData")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTime?>("UpdateAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("KpiUnitDatas");
+                    b.ToTable("Fields");
                 });
 
             modelBuilder.Entity("WebAPI1.Entities.UserInfoName", b =>
@@ -385,60 +248,16 @@ namespace WebAPI1.Entities
                     b.Navigation("Company");
                 });
 
-            modelBuilder.Entity("WebAPI1.Entities.KpiData", b =>
-                {
-                    b.HasOne("WebAPI1.Entities.CompanyName", "Company")
-                        .WithMany("KpiDatas")
-                        .HasForeignKey("CompanyId");
-
-                    b.HasOne("WebAPI1.Entities.KpiCategory", "KpiCategory")
-                        .WithMany("KpiDatas")
-                        .HasForeignKey("KpiCategoryId");
-
-                    b.HasOne("WebAPI1.Entities.KpiField", "KpiField")
-                        .WithMany("KpiDatas")
-                        .HasForeignKey("KpiFieldId");
-
-                    b.HasOne("WebAPI1.Entities.KpiUnitData", "KpiUnitData")
-                        .WithMany("KpiDatas")
-                        .HasForeignKey("KpiUnitDataId");
-
-                    b.Navigation("Company");
-
-                    b.Navigation("KpiCategory");
-
-                    b.Navigation("KpiField");
-
-                    b.Navigation("KpiUnitData");
-                });
-
             modelBuilder.Entity("WebAPI1.Entities.CompanyName", b =>
                 {
                     b.Navigation("DomainNames");
 
                     b.Navigation("FactoryNames");
-
-                    b.Navigation("KpiDatas");
                 });
 
             modelBuilder.Entity("WebAPI1.Entities.EnterpriseName", b =>
                 {
                     b.Navigation("CompanyNames");
-                });
-
-            modelBuilder.Entity("WebAPI1.Entities.KpiCategory", b =>
-                {
-                    b.Navigation("KpiDatas");
-                });
-
-            modelBuilder.Entity("WebAPI1.Entities.KpiField", b =>
-                {
-                    b.Navigation("KpiDatas");
-                });
-
-            modelBuilder.Entity("WebAPI1.Entities.KpiUnitData", b =>
-                {
-                    b.Navigation("KpiDatas");
                 });
 #pragma warning restore 612, 618
         }

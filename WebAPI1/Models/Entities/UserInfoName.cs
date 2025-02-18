@@ -25,16 +25,7 @@ public class UserInfoName
 
     [Column("authority", TypeName = "nvarchar(max)")]
     public string Authority { get; set; }
-
-    public DateTime? CreatedAt { get; set; }
-    public DateTime? UpdateAt { get; set; }
-
-    [Column("anyllmworkspace", TypeName = "nvarchar(50)")]
-    public string? AnyLLMWorkspace { get; set; }
-
-    [Column("avatar", TypeName = "varchar(max)")]
-    public string? Avatar { get; set; }
-
+    
     [Column("mobile", TypeName = "varchar(40)")]
     public string? Mobile { get; set; }
 
@@ -42,5 +33,8 @@ public class UserInfoName
     public string? Email { get; set; }
 
     public byte[] Salt { get; set; }
+    
+    public DateTime? CreatedAt { get; set; }
+    public DateTime? UpdateAt { get; set; }
 
 }

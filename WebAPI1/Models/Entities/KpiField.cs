@@ -6,22 +6,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebAPI1.Entities;
 
-[Index("CompanyId", Name = "IX_FactoryNames_CompanyId")]
-public partial class FactoryName
+public class KpiField
 {
     [Key]
     public int Id { get; set; }
 
-    [StringLength(150)]
-    public string factory { get; set; } = null!;
-
+    [StringLength(50)]
+    public string field { get; set; }
+    
+    [InverseProperty("KpiField")]
+    public virtual ICollection<KpiData> KpiDatas { get; set; } = new List<KpiData>();
+    
     public DateTime? CreatedAt { get; set; }
 
     public DateTime? UpdateAt { get; set; }
-
-    public int? CompanyId { get; set; }
-
-    [ForeignKey("CompanyId")]
-    [InverseProperty("FactoryNames")]
-    public virtual CompanyName? Company { get; set; }
 }

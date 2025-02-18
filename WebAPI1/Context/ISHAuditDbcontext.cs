@@ -17,12 +17,15 @@ public partial class ISHAuditDbcontext : DbContext
     }
 
     public virtual DbSet<CompanyName> CompanyNames { get; set; }
-
     public virtual DbSet<EnterpriseName> EnterpriseNames { get; set; }
-
     public virtual DbSet<FactoryName> FactoryNames { get; set; }
-    
     public virtual DbSet<UserInfoName> UserInfoNames { get; set; }
+    public virtual DbSet<DomainName> DomainNames { get; set; }
+    public virtual DbSet<KpiField> KpiFields { get; set; }
+    public virtual DbSet<KpiCategory> KpiCategorys { get; set; }
+    public virtual DbSet<KpiUnitData> KpiUnitDatas { get; set; }
+    public virtual DbSet<KpiData> KpiDatas { get; set; }
+    public virtual DbSet<KpiReport> KpiReports { get; set; }
     
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

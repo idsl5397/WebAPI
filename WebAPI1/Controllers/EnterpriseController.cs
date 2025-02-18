@@ -10,11 +10,11 @@ namespace WebAPI1.Controllers
     
     public class EnterpriseController : ControllerBase
     {
-        private readonly isha_sys_devContext _ishakpi;
+        private readonly isha_sys_devContext _db;
         
-        public EnterpriseController(isha_sys_devContext ishakpi)
+        public EnterpriseController(isha_sys_devContext db)
         {
-            _ishakpi = ishakpi;
+            _db = db;
         }
         public class TreeNode
         {
@@ -26,8 +26,9 @@ namespace WebAPI1.Controllers
         [HttpGet("GetEnterprise")]
         public IActionResult GetEnterprise()
         {
+           
             // 預先載入企業、公司及工廠的關聯資料
-            var enterprises = _ishakpi.EnterpriseNames
+            var enterprises = _db.EnterpriseNames
                 .Include(e => e.CompanyNames)
                 .ThenInclude(c => c.FactoryNames)
                 .ToList();

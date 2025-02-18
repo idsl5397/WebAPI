@@ -12,7 +12,7 @@ public partial class CompanyName
     [Key]
     public int Id { get; set; }
 
-    [StringLength(255)]
+    [StringLength(150)]
     public string company { get; set; } = null!;
 
     public DateTime? CreatedAt { get; set; }
@@ -27,4 +27,6 @@ public partial class CompanyName
 
     [InverseProperty("Company")]
     public virtual ICollection<FactoryName> FactoryNames { get; set; } = new List<FactoryName>();
+    public virtual ICollection<DomainName> DomainNames { get; set; } = new List<DomainName>();
+    public virtual ICollection<KpiData> KpiDatas { get; set; } = new List<KpiData>();
 }
