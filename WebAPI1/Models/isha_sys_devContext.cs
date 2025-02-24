@@ -22,6 +22,10 @@ public partial class isha_sys_devContext : DbContext
     public virtual DbSet<KpiUnitData> KpiUnitDatas { get; set; }
     public virtual DbSet<KpiData> KpiDatas { get; set; }
     public virtual DbSet<KpiReport> KpiReports { get; set; }
+    public virtual DbSet<SuggestData> SuggestDatas { get; set; }
+    public virtual DbSet<SuggestFile> SuggestFiles { get; set; }
+        
+
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -76,11 +80,46 @@ public partial class isha_sys_devContext : DbContext
             .OnDelete(DeleteBehavior.NoAction);
         
         // KpiData 與 KpiReport 關聯設定
-        // modelBuilder.Entity<KpiData>()
-        //     .HasMany(c => c.KpiReports)
-        //     .WithOne(d => d.KpiData)
-        //     .HasForeignKey(d => d.KpiDataId)
-        //     .OnDelete(DeleteBehavior.NoAction);
+        modelBuilder.Entity<KpiData>()
+            .HasMany(d => d.KpiReports)
+            .WithOne(r => r.KpiData)
+            .HasForeignKey(r => r.KpiDataId)
+            .OnDelete(DeleteBehavior.NoAction);
+        
+        // CompanyName 與 SuggestData 關聯設定
+        modelBuilder.Entity<CompanyName>()
+            .HasMany(c => c.SuggestDatas)
+            .WithOne(d => d.Company)
+            .HasForeignKey(d => d.CompanyId)
+            .OnDelete(DeleteBehavior.NoAction);
+        
+        // KpiField 與 SuggestData 關聯設定
+        modelBuilder.Entity<KpiField>()
+            .HasMany(c => c.SuggestDatas)
+            .WithOne(s => s.KpiField)
+            .HasForeignKey(s => s.KpiFieldId)
+            .OnDelete(DeleteBehavior.NoAction);
+        
+        // UserInfo 與 SuggestData 關聯設定
+        modelBuilder.Entity<UserInfoName>()
+            .HasMany(c => c.SuggestDatas)
+            .WithOne(s => s.UserInfoName)
+            .HasForeignKey(s => s.UserInfoNameId)
+            .OnDelete(DeleteBehavior.NoAction);
+        
+        // CompanyName 與 SuggestFile 關聯設定
+        modelBuilder.Entity<CompanyName>()
+            .HasMany(c => c.SuggestFiles)
+            .WithOne(d => d.Company)
+            .HasForeignKey(d => d.CompanyId)
+            .OnDelete(DeleteBehavior.NoAction);
+        
+        // UserInfo 與 SuggestFile 關聯設定
+        modelBuilder.Entity<UserInfoName>()
+            .HasMany(c => c.SuggestFiles)
+            .WithOne(s => s.UserInfoName)
+            .HasForeignKey(s => s.UserInfoNameId)
+            .OnDelete(DeleteBehavior.NoAction);
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

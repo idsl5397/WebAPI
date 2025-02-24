@@ -16,6 +16,7 @@ public class KpiField
     
     [InverseProperty("KpiField")]
     public virtual ICollection<KpiData> KpiDatas { get; set; } = new List<KpiData>();
+    public virtual ICollection<SuggestData> SuggestDatas { get; set; } = new List<SuggestData>();
     
     public DateTime? CreatedAt { get; set; }
 

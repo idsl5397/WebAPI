@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebAPI1.Context;
 
 #nullable disable
 
-namespace WebAPI1.Entities
+namespace WebAPI1.Migrations
 {
     [DbContext(typeof(ISHAuditDbcontext))]
-    partial class ISHAuditDbcontextModelSnapshot : ModelSnapshot
+    [Migration("20250224024910_DataToReport")]
+    partial class DataToReport
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -203,6 +206,7 @@ namespace WebAPI1.Entities
                         .HasColumnType("int");
 
                     b.Property<string>("Remarks")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TargetValue")
@@ -265,9 +269,6 @@ namespace WebAPI1.Entities
                     b.Property<int>("KpiReportValue")
                         .HasColumnType("int");
 
-                    b.Property<int>("Quarter")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("UpdateAt")
                         .HasColumnType("datetime2");
 
@@ -303,138 +304,6 @@ namespace WebAPI1.Entities
                     b.HasKey("Id");
 
                     b.ToTable("KpiUnitDatas");
-                });
-
-            modelBuilder.Entity("WebAPI1.Entities.SuggestData", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal?>("Budget")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int?>("CompanyId")
-                        .HasColumnType("int");
-
-                    b.Property<byte>("Completed")
-                        .HasColumnType("tinyint");
-
-                    b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("DoneMonth")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("DoneYear")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ExecPlan")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("ImproveDetails")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<byte>("IsAdopted")
-                        .HasColumnType("tinyint");
-
-                    b.Property<int?>("KpiFieldId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Manpower")
-                        .HasColumnType("int");
-
-                    b.Property<string>("MonthAndDay")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte>("ParallelExec")
-                        .HasColumnType("tinyint");
-
-                    b.Property<int>("Quarter")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Remark")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("RespDept")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte>("ReviewMethod")
-                        .HasColumnType("tinyint");
-
-                    b.Property<byte>("SuggestType")
-                        .HasColumnType("tinyint");
-
-                    b.Property<string>("SuggestionContent")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdateAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("UserInfoNameId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Year")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex(new[] { "CompanyId" }, "IX_SuggestDatas_CompanyId");
-
-                    b.HasIndex(new[] { "KpiFieldId" }, "IX_SuggestDatas_KpiFieldId");
-
-                    b.HasIndex(new[] { "UserInfoNameId" }, "IX_SuggestDatas_UserInfoNameId");
-
-                    b.ToTable("SuggestDatas");
-                });
-
-            modelBuilder.Entity("WebAPI1.Entities.SuggestFile", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("CompanyId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Quarter")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ReportName")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("ReportType")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int?>("UserInfoNameId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Year")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex(new[] { "CompanyId" }, "IX_SuggestFiles_CompanyId");
-
-                    b.HasIndex(new[] { "UserInfoNameId" }, "IX_SuggestFiles_UserInfoNameId");
-
-                    b.ToTable("SuggestFile");
                 });
 
             modelBuilder.Entity("WebAPI1.Entities.UserInfoName", b =>
@@ -560,42 +429,6 @@ namespace WebAPI1.Entities
                     b.Navigation("KpiData");
                 });
 
-            modelBuilder.Entity("WebAPI1.Entities.SuggestData", b =>
-                {
-                    b.HasOne("WebAPI1.Entities.CompanyName", "Company")
-                        .WithMany("SuggestDatas")
-                        .HasForeignKey("CompanyId");
-
-                    b.HasOne("WebAPI1.Entities.KpiField", "KpiField")
-                        .WithMany("SuggestDatas")
-                        .HasForeignKey("KpiFieldId");
-
-                    b.HasOne("WebAPI1.Entities.UserInfoName", "UserInfoName")
-                        .WithMany("SuggestDatas")
-                        .HasForeignKey("UserInfoNameId");
-
-                    b.Navigation("Company");
-
-                    b.Navigation("KpiField");
-
-                    b.Navigation("UserInfoName");
-                });
-
-            modelBuilder.Entity("WebAPI1.Entities.SuggestFile", b =>
-                {
-                    b.HasOne("WebAPI1.Entities.CompanyName", "Company")
-                        .WithMany("SuggestFiles")
-                        .HasForeignKey("CompanyId");
-
-                    b.HasOne("WebAPI1.Entities.UserInfoName", "UserInfoName")
-                        .WithMany("SuggestFiles")
-                        .HasForeignKey("UserInfoNameId");
-
-                    b.Navigation("Company");
-
-                    b.Navigation("UserInfoName");
-                });
-
             modelBuilder.Entity("WebAPI1.Entities.CompanyName", b =>
                 {
                     b.Navigation("DomainNames");
@@ -603,10 +436,6 @@ namespace WebAPI1.Entities
                     b.Navigation("FactoryNames");
 
                     b.Navigation("KpiDatas");
-
-                    b.Navigation("SuggestDatas");
-
-                    b.Navigation("SuggestFiles");
                 });
 
             modelBuilder.Entity("WebAPI1.Entities.EnterpriseName", b =>
@@ -627,20 +456,11 @@ namespace WebAPI1.Entities
             modelBuilder.Entity("WebAPI1.Entities.KpiField", b =>
                 {
                     b.Navigation("KpiDatas");
-
-                    b.Navigation("SuggestDatas");
                 });
 
             modelBuilder.Entity("WebAPI1.Entities.KpiUnitData", b =>
                 {
                     b.Navigation("KpiDatas");
-                });
-
-            modelBuilder.Entity("WebAPI1.Entities.UserInfoName", b =>
-                {
-                    b.Navigation("SuggestDatas");
-
-                    b.Navigation("SuggestFiles");
                 });
 #pragma warning restore 612, 618
         }

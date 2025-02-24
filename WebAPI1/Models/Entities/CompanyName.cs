@@ -29,4 +29,6 @@ public partial class CompanyName
     public virtual ICollection<FactoryName> FactoryNames { get; set; } = new List<FactoryName>();
     public virtual ICollection<DomainName> DomainNames { get; set; } = new List<DomainName>();
     public virtual ICollection<KpiData> KpiDatas { get; set; } = new List<KpiData>();
+    public virtual ICollection<SuggestData> SuggestDatas { get; set; } = new List<SuggestData>();
+    public virtual ICollection<SuggestFile> SuggestFiles { get; set; } = new List<SuggestFile>();
 }

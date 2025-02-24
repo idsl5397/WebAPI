@@ -26,6 +26,7 @@ public partial class ISHAuditDbcontext : DbContext
     public virtual DbSet<KpiUnitData> KpiUnitDatas { get; set; }
     public virtual DbSet<KpiData> KpiDatas { get; set; }
     public virtual DbSet<KpiReport> KpiReports { get; set; }
+    public virtual DbSet<SuggestData> SuggestDatas { get; set; }
     
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

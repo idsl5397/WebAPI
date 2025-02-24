@@ -33,14 +33,13 @@ public class KpiData
     public int TargetValue { get; set; }
 
     [Column(TypeName = "nvarchar(max)")]
-    public string Remarks { get; set; }
+    public string? Remarks { get; set; }
     
     public DateTime? CreatedAt { get; set; }
 
     public DateTime? UpdateAt { get; set; }
     
-    // [InverseProperty("kpiData")]
-    // public virtual ICollection<KpiReport> KpiReports { get; set; } = new List<KpiReport>();
+    public virtual ICollection<KpiReport> KpiReports { get; set; } = new List<KpiReport>();
     
     //外鍵
     public int? KpiFieldId { get; set; }
