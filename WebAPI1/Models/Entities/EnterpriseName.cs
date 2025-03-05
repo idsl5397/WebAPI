@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebAPI1.Entities;
 
-public partial class EnterpriseName
+public class EnterpriseName
 {
     [Key]
     public int Id { get; set; }

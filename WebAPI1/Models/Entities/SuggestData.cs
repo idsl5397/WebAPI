@@ -8,15 +8,15 @@ namespace WebAPI1.Entities;
 
 public enum ReviewType : byte // 使用 byte 節省空間
 {
-    書面審查會議 = 1,
-    實地進場查驗 = 2,
-    領先指標輔導 = 3
+    書面審查會議 = 0,
+    實地進場查驗 = 1,
+    領先指標輔導 = 2
 }
 public enum SuggestType : byte
 {
-    改善建議 = 1,
-    精進建議 = 2,
-    可資借鏡 = 3
+    改善建議 = 0,
+    精進建議 = 1,
+    可資借鏡 = 2
 }
 
 public enum IsAdopted : byte

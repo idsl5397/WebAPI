@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebAPI1.Context;
 
 #nullable disable
 
-namespace WebAPI1.Entities
+namespace WebAPI1.Migrations
 {
     [DbContext(typeof(ISHAuditDbcontext))]
-    partial class ISHAuditDbcontextModelSnapshot : ModelSnapshot
+    [Migration("20250225031526_delete Salt")]
+    partial class deleteSalt
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,41 +52,6 @@ namespace WebAPI1.Entities
                     b.HasIndex(new[] { "EnterpriseId" }, "IX_CompanyNames_EnterpriseId");
 
                     b.ToTable("CompanyNames");
-                });
-
-            modelBuilder.Entity("WebAPI1.Entities.DataChangeLog", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ModifiedBy")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTime>("ModifyDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("NewData")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte>("OperationType")
-                        .HasColumnType("tinyint");
-
-                    b.Property<int>("RecordId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TableName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DataChangeLogs");
                 });
 
             modelBuilder.Entity("WebAPI1.Entities.DomainName", b =>
@@ -441,7 +409,7 @@ namespace WebAPI1.Entities
                     b.Property<int?>("CompanyId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("CreatedAt")
+                    b.Property<DateTime>("CreateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("Quarter")
@@ -456,9 +424,6 @@ namespace WebAPI1.Entities
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
-
-                    b.Property<DateTime?>("UpdateAt")
-                        .HasColumnType("datetime2");
 
                     b.Property<int?>("UserInfoNameId")
                         .HasColumnType("int");
@@ -483,8 +448,10 @@ namespace WebAPI1.Entities
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<byte>("Auth")
-                        .HasColumnType("tinyint");
+                    b.Property<string>("Authority")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("authority");
 
                     b.Property<int?>("CompanyId")
                         .HasColumnType("int");
@@ -493,7 +460,6 @@ namespace WebAPI1.Entities
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("varchar(max)")
                         .HasColumnName("email");
 
@@ -506,6 +472,11 @@ namespace WebAPI1.Entities
                     b.Property<string>("Mobile")
                         .HasColumnType("varchar(40)")
                         .HasColumnName("mobile");
+
+                    b.Property<string>("Nickname")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("nickname");
 
                     b.Property<string>("Password")
                         .IsRequired()

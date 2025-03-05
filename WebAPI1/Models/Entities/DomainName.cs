@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace WebAPI1.Entities;
 
 [Index("CompanyId", Name = "IX_FactoryNames_CompanyId")]
-public partial class DomainName
+public class DomainName
 {
     [Key]
     public int Id { get; set; }

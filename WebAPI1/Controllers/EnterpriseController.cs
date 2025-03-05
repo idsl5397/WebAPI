@@ -24,7 +24,7 @@ namespace WebAPI1.Controllers
         }
         
         [HttpGet("GetEnterprise")]
-        public IActionResult GetEnterprise()
+        public IActionResult GetEnterprise(int? companyId = null)
         {
            
             // 預先載入企業、公司及工廠的關聯資料
@@ -33,26 +33,70 @@ namespace WebAPI1.Controllers
                 .ThenInclude(c => c.FactoryNames)
                 .ToList();
 
-            // 建立樹狀結構
-            var enterprise_name = enterprises.Select(e => new TreeNode
+            // 如果有傳入 companyId，則固定選擇對應的企業及公司名稱
+            if (companyId.HasValue)
             {
-                Id = e.Id.ToString(),
-                Name = e.enterprise,
-                Children = e.CompanyNames.Select(c => new TreeNode
-                {
-                    Id = c.Id.ToString(),
-                    Name = c.company,
-                    Children = c.FactoryNames.Select(f => new TreeNode
-                    {
-                        Id = f.Id.ToString(),
-                        Name = f.factory,
-                        Children = new List<TreeNode>() // 工廠沒有子節點
-                    }).ToList()
-                }).ToList()
-            }).ToList();
+                var company = _db.CompanyNames
+                    .Include(c => c.Enterprise)
+                    .Where(c => c.Id == companyId.Value)
+                    .FirstOrDefault();
 
-            return Ok(enterprise_name);
+                if (company != null)
+                {
+                    var enterpriseName = company.Enterprise.enterprise;
+                    var companyName = company.company;
+
+                    var enterpriseTree = new TreeNode
+                    {
+                        Id = company.Enterprise.Id.ToString(),
+                        Name = enterpriseName,
+                        Children = new List<TreeNode>
+                        {
+                            new TreeNode
+                            {
+                                Id = company.Id.ToString(),
+                                Name = companyName,
+                                Children = company.FactoryNames != null ? company.FactoryNames.Select(f => new TreeNode
+                                {
+                                    Id = f.Id.ToString(),
+                                    Name = f.factory,
+                                    Children = new List<TreeNode>() // 工廠沒有子節點
+                                }).ToList() : new List<TreeNode>() // 如果 FactoryNames 為 null，給一個空陣列
+                            }
+                        }
+                    };
+
+                    return Ok(new { enterpriseTree });
+                }
+                else
+                {
+                    return NotFound("公司未找到");
+                }
+            }
+            else
+            {
+                // 如果沒有傳入 companyId，則返回整個樹狀結構
+                var enterprise_name = enterprises.Select(e => new TreeNode
+                {
+                    Id = e.Id.ToString(),
+                    Name = e.enterprise,
+                    Children = e.CompanyNames.Select(c => new TreeNode
+                    {
+                        Id = c.Id.ToString(),
+                        Name = c.company,
+                        Children = c.FactoryNames.Select(f => new TreeNode
+                        {
+                            Id = f.Id.ToString(),
+                            Name = f.factory,
+                            Children = new List<TreeNode>() // 工廠沒有子節點
+                        }).ToList()
+                    }).ToList()
+                }).ToList();
+
+                return Ok(enterprise_name);
+            }
         }
+        
     }
     
 }

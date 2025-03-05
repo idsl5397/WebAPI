@@ -24,6 +24,7 @@ public partial class isha_sys_devContext : DbContext
     public virtual DbSet<KpiReport> KpiReports { get; set; }
     public virtual DbSet<SuggestData> SuggestDatas { get; set; }
     public virtual DbSet<SuggestFile> SuggestFiles { get; set; }
+    public virtual DbSet<DataChangeLog> DataChangeLogs { get; set; }
         
 
     

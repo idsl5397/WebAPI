@@ -24,7 +24,9 @@ public class SuggestFile
     [MaxLength(100)]
     public string ReportType { get; set; } // 報告書類型
 
-    public DateTime CreateTime { get; set; } // 上傳日期
+    public DateTime? CreatedAt { get; set; }
+
+    public DateTime? UpdateAt { get; set; }
     
     public int? CompanyId { get; set; } // 公司 (外鍵)
 
