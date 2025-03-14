@@ -1,82 +1,97 @@
-﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using WebAPI1.Migrations;
 using WebAPI1.Models;
 
 namespace WebAPI1.Controllers
 {
-    [Route("api/[controller]")]
+    
+    public class LoginDto
+    {
+        public string Usermail { get; set; }
+        public string Password { get; set; }
+    }
+    
+    [Route("[controller]")]
     [ApiController]
 
     public class UserController : ControllerBase
     {
-        private readonly isha_sys_devContext _isha_sys_dev;
+        private readonly isha_sys_devContext _db;
+        private readonly IConfiguration _configuration;
+        public UserController(isha_sys_devContext db, IConfiguration configuration)
+        {
+            _db = db;
+            _configuration = configuration;
+        }
+        
+        [HttpPost("login")]
+        public IActionResult Login([FromBody] LoginDto loginDto)
+        {
+            // 驗證用戶名和密碼
+            var user = _db.UserInfoNames
+                .FirstOrDefault(u => u.Email == loginDto.Usermail && u.Password == loginDto.Password);
+        
+            if (user == null)
+            {
+                return Unauthorized(new
+                {
+                    success = false,
+                    message = "Email or password is incorrect"
+                });
+            }
 
-        // public UserController(isha_sys_devContext isha_sys_dev)
-        // {
-        //     _isha_sys_dev = isha_sys_dev;
-        // }
-        //
-        // [HttpGet]
-        // public IEnumerable<user_info> Get()
-        // {
-        //     return _isha_sys_dev.user_info;
-        // }
-        //
-        // public class LoginDto
-        // {
-        //     public string Username { get; set; }
-        //     public string Password { get; set; }
-        // }
-        //
-        // [HttpPost("login")]
-        // public IActionResult Login([FromBody] LoginDto loginDto)
-        // {
-        //     byte[] salt = new byte[128 / 8];
-        //     // 使用 LINQ 查詢用戶
-        //     var user = _isha_sys_dev.user_info
-        //         .FirstOrDefault(u => u.username == loginDto.Username);
-        //
-        //     if (user == null)
-        //     {
-        //         // 返回未授權狀態碼和錯誤訊息
-        //         return Unauthorized(new { message = "沒有這人" });
-        //     }
-        //
-        //     // 從數據庫中獲取存儲的密文和 salt
-        //     var storedHashedPassword = user.password; // 數據庫中的密文
-        //     var storedSalt = Convert.FromBase64String(user.salt); // 數據庫中的 salt
-        //
-        //     // 使用用戶輸入的密碼和存儲的 salt 進行加密
-        //     var inputHashedPassword = Convert.ToBase64String(
-        //         KeyDerivation.Pbkdf2(
-        //             password: loginDto.Password,
-        //             salt: storedSalt,
-        //             prf: KeyDerivationPrf.HMACSHA1,
-        //             iterationCount: 5000,
-        //             numBytesRequested: 256 / 8
-        //         )
-        //     );
-        //
-        //     // 比較加密後的密碼是否匹配
-        //     if (inputHashedPassword != storedHashedPassword)
-        //     {
-        //         Console.WriteLine(inputHashedPassword);
-        //         Console.WriteLine(storedHashedPassword);
-        //         // 返回未授權狀態碼和錯誤訊息
-        //         return Unauthorized(new { message = "用戶名或密碼錯誤"});
-        //     }
-        //
-        //     // 返回用戶數據（移除敏感信息）
-        //     var userDto = new
-        //     {
-        //         Username = user.username,
-        //         Email = user.email
-        //         // 其他需要的字段
-        //     };
-        //
-        //     return Ok(userDto); // 返回成功響應
-        // }
+            
+            // 創建 JWT
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.Email, user.Email),
+            };
+
+            // 讀取 JwtSettings 配置
+            var jwtSettings = _configuration.GetSection("JwtSettings");
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: jwtSettings["Issuer"],
+                audience: jwtSettings["Audience"],
+                claims: claims,
+                expires: DateTime.Now.AddDays(1),
+                signingCredentials: creds
+            );
+
+            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+
+            // 返回 JWT 和用戶信息
+            return Ok(new 
+            { 
+                success = true,
+                message = "",
+                token = jwt,
+                username = user.Username,
+                email = user.Email
+            });
+        }
+        
+        private string GenerateJwtToken(string username, SymmetricSecurityKey key)
+        {
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var token = new JwtSecurityToken(
+                issuer: _configuration["JwtSettings:Issuer"],
+                audience: _configuration["JwtSettings:Audience"],
+                expires: DateTime.Now.AddMinutes(30),
+                signingCredentials: creds
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
     }
 }

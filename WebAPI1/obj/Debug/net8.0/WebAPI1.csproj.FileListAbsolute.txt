@@ -338,3 +338,6 @@ D:\D曹\宜蓁\web api 練習\WebAPI1\WebAPI1\obj\Debug\net8.0\WebAPI1.pdb
 D:\D曹\宜蓁\web api 練習\WebAPI1\WebAPI1\obj\Debug\net8.0\WebAPI1.genruntimeconfig.cache
 D:\D曹\宜蓁\web api 練習\WebAPI1\WebAPI1\obj\Debug\net8.0\ref\WebAPI1.dll
 D:\D曹\宜蓁\web api 練習\WebAPI1\WebAPI1\obj\Debug\net8.0\WebAPI1.sourcelink.json
+D:\D曹\宜蓁\web api 練習\WebAPI1\WebAPI1\bin\Debug\net8.0\JWT.dll
+D:\D曹\宜蓁\web api 練習\WebAPI1\WebAPI1\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\D曹\宜蓁\web api 練習\WebAPI1\WebAPI1\bin\Debug\net8.0\Newtonsoft.Json.dll

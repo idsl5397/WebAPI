@@ -25,8 +25,9 @@ public partial class isha_sys_devContext : DbContext
     public virtual DbSet<SuggestData> SuggestDatas { get; set; }
     public virtual DbSet<SuggestFile> SuggestFiles { get; set; }
     public virtual DbSet<DataChangeLog> DataChangeLogs { get; set; }
+    public virtual DbSet<Menu> Menus { get; set; }
+    public virtual DbSet<MenuRole> MenusRoles { get; set; }
         
-
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -120,6 +121,13 @@ public partial class isha_sys_devContext : DbContext
             .HasMany(c => c.SuggestFiles)
             .WithOne(s => s.UserInfoName)
             .HasForeignKey(s => s.UserInfoNameId)
+            .OnDelete(DeleteBehavior.NoAction);
+        
+        // Menu 與 MenuRole 關聯設定
+        modelBuilder.Entity<Menu>()
+            .HasMany(e => e.MenuRoles)
+            .WithOne(c => c.Menu)
+            .HasForeignKey(c => c.MenuId)
             .OnDelete(DeleteBehavior.NoAction);
     }
 

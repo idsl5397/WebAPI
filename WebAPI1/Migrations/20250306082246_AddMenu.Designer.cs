@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebAPI1.Context;
 
 #nullable disable
 
-namespace WebAPI1.Entities
+namespace WebAPI1.Migrations
 {
     [DbContext(typeof(ISHAuditDbcontext))]
-    partial class ISHAuditDbcontextModelSnapshot : ModelSnapshot
+    [Migration("20250306082246_AddMenu")]
+    partial class AddMenu
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -364,7 +367,6 @@ namespace WebAPI1.Entities
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Link")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -373,10 +375,10 @@ namespace WebAPI1.Entities
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int?>("ParentId")
+                    b.Property<int>("ParentId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SortOrder")
+                    b.Property<int?>("SortOrder")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdateAt")
@@ -385,29 +387,6 @@ namespace WebAPI1.Entities
                     b.HasKey("Id");
 
                     b.ToTable("Menus");
-                });
-
-            modelBuilder.Entity("WebAPI1.Entities.MenuRole", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("MenuId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("RoleName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MenuId");
-
-                    b.ToTable("MenusRoles");
                 });
 
             modelBuilder.Entity("WebAPI1.Entities.SuggestData", b =>
@@ -658,15 +637,6 @@ namespace WebAPI1.Entities
                     b.Navigation("KpiData");
                 });
 
-            modelBuilder.Entity("WebAPI1.Entities.MenuRole", b =>
-                {
-                    b.HasOne("WebAPI1.Entities.Menu", "Menu")
-                        .WithMany("MenuRoles")
-                        .HasForeignKey("MenuId");
-
-                    b.Navigation("Menu");
-                });
-
             modelBuilder.Entity("WebAPI1.Entities.SuggestData", b =>
                 {
                     b.HasOne("WebAPI1.Entities.CompanyName", "Company")
@@ -741,11 +711,6 @@ namespace WebAPI1.Entities
             modelBuilder.Entity("WebAPI1.Entities.KpiUnitData", b =>
                 {
                     b.Navigation("KpiDatas");
-                });
-
-            modelBuilder.Entity("WebAPI1.Entities.Menu", b =>
-                {
-                    b.Navigation("MenuRoles");
                 });
 
             modelBuilder.Entity("WebAPI1.Entities.UserInfoName", b =>

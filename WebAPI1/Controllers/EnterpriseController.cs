@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebAPI1.Entities;
 using WebAPI1.Models;
@@ -7,7 +8,7 @@ namespace WebAPI1.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    
+    [Authorize]
     public class EnterpriseController : ControllerBase
     {
         private readonly isha_sys_devContext _db;
