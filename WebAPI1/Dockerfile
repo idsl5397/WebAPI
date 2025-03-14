@@ -9,8 +9,9 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["WebAPI1.csproj", "WebAPI1/"]
 RUN dotnet restore "WebAPI1/WebAPI1.csproj"
+RUN ls -al /src
 COPY . .
-WORKDIR "/src/"
+WORKDIR "/src"
 RUN dotnet build "WebAPI1.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
