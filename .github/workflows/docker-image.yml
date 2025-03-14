@@ -27,7 +27,7 @@ jobs:
     - name: Build and push Docker image
       uses: docker/build-push-action@v4
       with:
-        context: WebAPI
-        file: WebAPI/Dockerfile
+        context: WebAPI1
+        file: WebAPI1/Dockerfile
         push: true
         tags: piau880906/backend:latest
